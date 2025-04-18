@@ -2,11 +2,30 @@
 <html>
 	<head>
 	<title>Focus Timer</title>
+	<script>
+		// 25분 타이머 기능
+		function startTimer() {
+			let time = 25 * 60; // 25분을 초로 변환
+			const timerDisplay = document.getElementById('timer-display');
+			const interval = setInterval(() => {
+				const minutes = Math.floor(time / 60);
+				const seconds = time % 60;
+				timerDisplay.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+				time--;
+
+				if (time < 0) {
+					clearInterval(interval);
+					alert('타이머가 종료되었습니다!');
+				}
+			}, 1000);
+		}
+	</script>
 	</head>
 	
 	<body>
 	<h1>Hello Focus</h1>
+	<button onclick="startTimer()">25분 타이머 시작</button>
+	<p id="timer-display">25:00</p>
 	<button>다크모드 (준비 중)</button>
-	<p></p>
 	</body>
 </html>
