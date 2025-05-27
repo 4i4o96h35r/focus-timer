@@ -1,31 +1,47 @@
 <!DOCTYPE html>
 <html>
-	<head>
-	<title>Focus Timer</title>
-	<script>
-		// 25분 타이머 기능
-		function startTimer() {
-			let time = 25 * 60; // 25분을 초로 변환
-			const timerDisplay = document.getElementById('timer-display');
-			const interval = setInterval(() => {
-				const minutes = Math.floor(time / 60);
-				const seconds = time % 60;
-				timerDisplay.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-				time--;
+    <head>
+    <title>Focus Timer</title>
+    <script>
+        let interval = null; // 인터벌 ID 저장
+        let time = 25 * 60;  // 25분(초)
 
-				if (time < 0) {
-					clearInterval(interval);
-					alert('타이머가 종료되었습니다!');
-				}
-			}, 1000);
-		}
-	</script>
-	</head>
-	
-	<body>
-	<h1>Hello Focus</h1>
-	<button onclick="startTimer()">25분 타이머 시작</button>
-	<p id="timer-display">25:00</p>
-	<button>다크모드 (준비 중)</button>
-	</body>
+        function updateDisplay() {
+            const timerDisplay = document.getElementById('timer-display');
+            const minutes = Math.floor(time / 60);
+            const seconds = time % 60;
+            timerDisplay.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+        }
+
+        function startTimer() {
+            if (interval !== null) return; // 이미 실행 중이면 중복 방지
+            interval = setInterval(() => {
+                updateDisplay();
+                time--;
+                if (time < 0) {
+                    clearInterval(interval);
+                    interval = null;
+                    alert('타이머가 종료되었습니다!');
+                }
+            }, 1000);
+        }
+
+        function stopTimer() {
+            if (interval !== null) {
+                clearInterval(interval);
+                interval = null;
+            }
+        }
+
+        window.onload = updateDisplay;
+    </script>
+    </head>
+    
+    <body>
+    <h1>Hello Focus</h1>
+    <button onclick="startTimer()">25분 타이머 시작</button>
+    <button onclick="stopTimer()">중단</button>
+    <p id="timer-display">25:00</p>
+    <button>다크모드 (준비 중)</button>
+    </body>
 </html>
